@@ -30,7 +30,12 @@ public:
   * Kalman Filter update and prediction math lives in here.
   */
   KalmanFilter ekf_;
-
+private:
+  void Initialize(const MeasurementPackage &measurement_pack);
+  void ConvertPolarToCartesian(const MeasurementPackage &measurement_pack, float &px, float &py, float &vx, float &vy);
+  void Prediction(const MeasurementPackage &measurement_pack);
+  void Update(const MeasurementPackage &measurement_pack);
+  
 private:
   // check whether the tracking toolbox was initialized or not (first measurement)
   bool is_initialized_;
@@ -44,6 +49,14 @@ private:
   Eigen::MatrixXd R_radar_;
   Eigen::MatrixXd H_laser_;
   Eigen::MatrixXd Hj_;
+  Eigen::MatrixXd F_;
+  Eigen::MatrixXd P_;
+  Eigen::MatrixXd Q_;
+
+  // noise
+  float noise_ax;
+  float noise_ay;
+  
 };
 
 #endif /* FusionEKF_H_ */

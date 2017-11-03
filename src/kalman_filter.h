@@ -1,6 +1,8 @@
 #ifndef KALMAN_FILTER_H_
 #define KALMAN_FILTER_H_
 #include "Eigen/Dense"
+#include "tools.h"
+#include <cmath>
 
 class KalmanFilter {
 public:
@@ -64,6 +66,11 @@ public:
    */
   void UpdateEKF(const Eigen::VectorXd &z);
 
+private:
+  /**
+   * Measurement prediction in polar form
+   */
+  Eigen::VectorXd GetPredictedInPolarForm();
 };
 
 #endif /* KALMAN_FILTER_H_ */
