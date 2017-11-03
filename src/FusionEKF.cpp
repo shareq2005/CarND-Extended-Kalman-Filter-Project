@@ -81,26 +81,19 @@ void FusionEKF::ProcessMeasurement(const MeasurementPackage &measurement_pack) {
     return;
   }
   
-  cout << "FusionEKF::ProcessMeasurement - raw_measurements:" << endl << measurement_pack.raw_measurements_ << endl;
-  cout << "FusionEKF::ProcessMeasurement - Before Prediction x_:" << endl << ekf_.x_ << endl;
-
   /*****************************************************************************
    *  Prediction
    ****************************************************************************/
   Prediction(measurement_pack);
-
-  cout << "FusionEKF::ProcessMeasurement - After Prediction x_:" << endl << ekf_.x_ << endl;
 
   /*****************************************************************************
    *  Update
    ****************************************************************************/
   Update(measurement_pack);
 
-  cout << "FusionEKF::ProcessMeasurement - After Update x_:" << endl << ekf_.x_ << endl;
-
   // print the output
-  //cout << "x_ = " << ekf_.x_ << endl;
-  //cout << "P_ = " << ekf_.P_ << endl;
+  cout << "x_ = " << ekf_.x_ << endl;
+  cout << "P_ = " << ekf_.P_ << endl;
 }
 
 void FusionEKF::Initialize(const MeasurementPackage &measurement_pack)
@@ -125,9 +118,7 @@ void FusionEKF::Initialize(const MeasurementPackage &measurement_pack)
     
     VectorXd x_in = VectorXd(4);
     x_in << r_px, r_py, r_vx, r_vy;
-    
-    cout << "FusionEKF::Initialize() - x_in:" << endl << x_in << endl;
-    
+
     ekf_.Init(x_in, P_, F_, Hj_, R_radar_, Q_);
   }
   else if (measurement_pack.sensor_type_ == MeasurementPackage::LASER)
@@ -137,8 +128,6 @@ void FusionEKF::Initialize(const MeasurementPackage &measurement_pack)
             measurement_pack.raw_measurements_[1],
             0,0;
 
-    cout << "FusionEKF::Initialize() - x_in:" << endl << x_in << endl;
-    
     ekf_.Init(x_in, P_, F_, H_laser_, R_laser_, Q_);
   }
   
@@ -181,8 +170,6 @@ void FusionEKF::Prediction(const MeasurementPackage &measurement_pack)
   ekf_.F_(0, 2) = dt;
   ekf_.F_(1, 3) = dt;
   
-  cout << "FusionEKF::Prediction() - F_:" << endl << ekf_.F_ << endl;
-  
   //set the process covariance matrix Q
   ekf_.Q_ = MatrixXd(4, 4);
   
@@ -193,8 +180,6 @@ void FusionEKF::Prediction(const MeasurementPackage &measurement_pack)
               0, dt_4/4*noise_ay, 0, dt_3/2*noise_ay,
               dt_3/2*noise_ax, 0, dt_2*noise_ax, 0,
               0, dt_3/2*noise_ay, 0, dt_2*noise_ay;
-  
-  cout << "FusionEKF::Prediction() - Q_:" << endl << ekf_.Q_ << endl;
   
   ekf_.Predict();
 }

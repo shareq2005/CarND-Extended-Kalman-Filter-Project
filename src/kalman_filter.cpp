@@ -31,21 +31,9 @@ void KalmanFilter::Predict()
   /**
     * predict the state
   */
-  cout << "KalmanFilter::Predict() - old x_ :" << endl << x_ << endl;
-
   x_ = F_ * x_;
-  
-  cout << "KalmanFilter::Predict() - new x_ :" << endl;
-  cout << x_ << endl;
-  
-  cout << "KalmanFilter::Predict() - F_ :" << endl;
-  cout << F_;
-  
-  
   MatrixXd Ft = F_.transpose();
   P_ = F_ * P_ * Ft + Q_;
-  
-  cout << "KalmanFilter::Predict() - new x_ = " << x_ << endl;
 }
 
 void KalmanFilter::Update(const VectorXd &z)
