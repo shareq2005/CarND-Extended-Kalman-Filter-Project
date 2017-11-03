@@ -191,9 +191,6 @@ void FusionEKF::Update(const MeasurementPackage &measurement_pack)
     // Radar updates
     Hj_ = tools.CalculateJacobian(ekf_.x_);
     
-    cout << "FusionEKF::Update() - Hj_ :" << endl;
-    cout << Hj_ << endl;
-    
     ekf_.H_ = Hj_;
     ekf_.R_ = R_radar_;
     ekf_.UpdateEKF(measurement_pack.raw_measurements_);
